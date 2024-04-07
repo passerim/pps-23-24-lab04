@@ -36,10 +36,9 @@ object Ex1ComplexNumbers:
       def subtract(other: Complex): Complex =
         ComplexImpl(complex.re - other.re, complex.im - other.im)
 
-      def asString(): String =
-        (complex.re, complex.im) match
-          case (0.0, 0.0)      => "0.0"
-          case (a, 0.0)        => s"$a"
-          case (0.0, b)        => s"${b}i"
-          case (a, b) if b < 0 => s"$a - ${b.abs}i"
-          case (a, b)          => s"$a + ${b}i"
+      def asString(): String = (complex.re, complex.im) match
+        case (0.0, 0.0)      => "0.0"
+        case (a, 0.0)        => s"$a"
+        case (0.0, b)        => s"${b}i"
+        case (a, b) if b < 0 => s"$a - ${b.abs}i"
+        case (a, b)          => s"$a + ${b}i"

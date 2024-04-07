@@ -11,14 +11,17 @@ import u04.monads.Monads.Monad
  *   - Verify that the main works as expected
  */
 object Ex6TryModel:
+
   private enum TryImpl[A]:
     case Success(value: A)
     case Failure(exception: Throwable)
 
   opaque type Try[A] = TryImpl[A]
 
-  def success[A](value: A): Try[A]             = TryImpl.Success(value)
+  def success[A](value: A): Try[A] = TryImpl.Success(value)
+
   def failure[A](exception: Throwable): Try[A] = TryImpl.Failure(exception)
+
   def exec[A](expression: => A): Try[A] =
     try success(expression)
     catch case e => failure(e)
@@ -30,6 +33,7 @@ object Ex6TryModel:
 
   given Monad[Try] with
     override def unit[A](value: A): Try[A] = TryImpl.Success(value)
+
     extension [A](m: Try[A])
       override def flatMap[B](f: A => Try[B]): Try[B] = m match
         case TryImpl.Success(value)     => f(value)
