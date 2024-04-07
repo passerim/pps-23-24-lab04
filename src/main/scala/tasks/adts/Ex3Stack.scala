@@ -1,11 +1,13 @@
 package tasks.adts
 
-import u03.Sequences.*
 import u03.Optionals.*
+import u03.Optionals.Optional.*
+import u03.Sequences.*
+import u03.Sequences.Sequence.*
 
-/*  Exercise 3: 
+/*  Exercise 3:
  *  Implement a Stack ADT
- *  Suggestion: 
+ *  Suggestion:
  *  - push adds an element and returns the new stack
  *  - pop returns:
  *  -- empty optional is stack is empty
@@ -18,13 +20,15 @@ object Ex3Stacks:
     def empty[A]: Stack[A] // factory
     extension [A](stack: Stack[A])
       def push(a: A): Stack[A]
-      def pop(a: A): Optional[(A, Stack[A])]
+      def pop: Optional[(A, Stack[A])]
       def asSequence(): Sequence[A]
-  
+
   object StackImpl extends StackADT:
-    type Stack[A] = Nothing
-    def empty[A]: Stack[A] = ???
+    opaque type Stack[A] = Sequence[A]
+    def empty[A]: Stack[A] = Nil()
     extension [A](stack: Stack[A])
-      def push(a: A): Stack[A] = ???
-      def pop(a: A): Optional[(A, Stack[A])] = ???
-      def asSequence(): Sequence[A] = ???
+      def push(a: A): Stack[A] = Cons(a, stack)
+      def pop: Optional[(A, Stack[A])] = stack match
+        case Cons(h, t) => Just((h, t))
+        case _          => Empty()
+      def asSequence(): Sequence[A] = stack
