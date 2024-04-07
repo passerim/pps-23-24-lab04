@@ -24,16 +24,6 @@ object Ex5Traversable:
 
   def log[A](a: A): Unit = println("The next element is: " + a)
 
-  @tailrec
-  def logAllSequence[A](seq: Sequence[A]): Unit = seq match
-    case Cons(h, t) => log(h); logAllSequence(t)
-    case _          => ()
-
-  @tailrec
-  def logAllOptional[A](opt: Optional[A]): Unit = opt match
-    case Just(a) => log(a); logAllOptional(Empty())
-    case _       => ()
-
   trait Traversable[T[_]]:
     def foreach[A](el: T[A])(f: A => Unit): Unit
 
@@ -55,21 +45,17 @@ object Ex5Traversable:
   import Ex5Traversable.{*, given}
 
   val seq1 = Cons(10, Cons(20, Cons(30, Nil())))
-  logAllSequence(seq1)
   logAll(seq1)(log)
   logAll(seq1)(println(_))
 
   val seq2 = Cons("10", Cons("20", Cons("30", Nil())))
-  logAllSequence(seq2)
   logAll(seq2)(log)
   logAll(seq2)(println(_))
 
   val opt1 = Just(10)
-  logAllOptional(opt1)
   logAll(opt1)(log)
   logAll(opt1)(println(_))
 
   val op2 = Just("10")
-  logAllOptional(op2)
   logAll(op2)(log)
   logAll(op2)(println(_))
